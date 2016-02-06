@@ -15,11 +15,11 @@ public class WholeFileInputFormat extends FileInputFormat <NullWritable, Text>
 {
 
 	@Override
-	public RecordReader<NullWritable, Text> createRecordReader(InputSplit arg0, TaskAttemptContext arg1)
+	public RecordReader<NullWritable, Text> createRecordReader(InputSplit split, TaskAttemptContext context)
 			throws IOException, InterruptedException 
 	{
 		WholeFileRecordReader reader = new WholeFileRecordReader();
-		reader.initialize(arg0, arg1);
+		reader.initialize(split, context);
 		return reader;
 	}
 	
