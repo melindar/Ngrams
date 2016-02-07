@@ -1,9 +1,9 @@
 package ngrams;
 
-import java.util.ArrayList;
 /*import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;*/
+import java.io.FileNotFoundException; */
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -14,21 +14,30 @@ public class Parser
 	private String date;
 	private String author;
 	private String title;
+	private String ngramType;
+	private Scanner scan;
+	public ArrayList<String> tokens = new ArrayList<String>();
+
+	public Parser(String ngramType, Text value)
+	{
+		this.ngramType = ngramType;
+		this.scan = new Scanner(value.toString());
+	}
+
 	
 	/*public static void main(String[] args)
 	{
-		String file = "../sampleData/77.txt";
-		Parser parse = new Parser();
-		Scanner scan = parse.openFile(file);
-		parse.getHeaderInfo(scan);
-		System.out.println(parse.date);
-		System.out.println(parse.author);
-		System.out.println(parse.title);
-	}*/
-	
-	/*public Scanner openFile(String filename)
+		String file = "11.txt";
+		//Text value = new Text();
+		Parser parse = new Parser("bigramDate", file);
+		parse.openFile(file);
+		parse.setHeaderInfo();
+		parse.tokenizeNgrams();
+		parse.printTokens();
+	}	
+
+	public void openFile(String filename)
 	{
-		Scanner scan = null;
 		try {
 			File file = new File(filename);
 			scan = new Scanner(new FileInputStream(file));
@@ -36,8 +45,14 @@ public class Parser
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return scan;
-	}*/
+
+	public void printTokens()
+	{
+		for(String s : tokens)
+		{
+			System.out.println(s);
+		}
+	} */
 	
 	/******************************** Getters and Setters ********************************/
 	
@@ -58,15 +73,17 @@ public class Parser
 	
 	public String getValue()
 	{
-		return getDate();
+		if(ngramType.equals("unigramDate") || ngramType.equals("bigramDate"))
+			return getDate();
+		else // unigramAuthor or bigramAuthor for all other cases
+			return getAuthor();
 	}
 
 	/******************************** Methods to retrieve header data ********************************/
 	
-	public Scanner getHeaderInfo(Text header) //***************** Change this to (Text header) for Ngam, (Scanner scan) for testing! *****************
+	public void setHeaderInfo() 
 	{
 		String stopString = "*** START";
-		Scanner scan = new Scanner(header.toString()); //Comment this out for testing
 		if(scan.hasNextLine())
 		{
 			String line = scan.nextLine();
@@ -91,13 +108,12 @@ public class Parser
 			
 		}
 		
-		return scan;
 	}
 	
 	
 	/******************************** Methods to parse header ********************************/
 	
-	public String parseDate(String containsDate)
+	private String parseDate(String containsDate)
 	{
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(containsDate);
@@ -106,30 +122,92 @@ public class Parser
 		return date;
 	}
 	
-	public String parseAuthor(String containsAuthor)
+	private String parseAuthor(String containsAuthor)
 	{
 		String[] tokens = containsAuthor.split("\\p{Blank}");  
-		String lastToken = tokens[tokens.length -1];      
+		String lastToken = tokens[tokens.length -1];
+		// Remove the ')' from last name in parenthesis (e.g. Mark Twain (Samuel Clemens))
+		if(lastToken.charAt(lastToken.length() - 1) == ')')
+			lastToken = lastToken.substring(0,lastToken.length() - 1);
 		return lastToken; 
 	}
 	
-	public String parseTitle(String containsTitle)
+	private String parseTitle(String containsTitle)
 	{
 		String title = containsTitle.replaceAll("Title:", "").trim();
 		return title;
 	}
 	
 	/******************************** Methods to parse Ngrams ********************************/
-
-	public String removePunctuation(String s)
+	
+	public void tokenizeNgrams()
 	{
-		s = s.replaceAll("\\p{Punct}+", "");
-		return s.toLowerCase();
+		if(ngramType.startsWith("unigram"))
+			tokenizeUnigrams();
+		else // Type is bigram if not unigram
+			tokenizeBigrams();	
 	}
 	
-	public ArrayList<String> tokenizeUnigramLine(String line)
+	private void tokenizeBigrams() 
 	{
-		ArrayList<String> tokens = new ArrayList<String>();
+		String[] fileString = putFileIntoString();
+		tokenizeBigramSentences(fileString);
+	}
+	
+	private String[] putFileIntoString()
+	{
+		String fileString = "";
+		while (scan.hasNextLine()) 
+		{
+			String line = scan.nextLine();
+			if(line.startsWith("*** END"))
+				break;
+			fileString += " " + line;
+		}
+		scan.close();
+		fileString = fileString.replaceAll("[\\\t|\\\n|\\\r]"," ");
+		String[] sentences = fileString.split("\\.");
+		return sentences;
+	}
+	
+	private void tokenizeBigramSentences(String[] sentences)
+	{
+		for(int i = 0; i < sentences.length; i++)
+		{
+			String sentence = removePunctuation(sentences[i]);
+			setBigramTokens(sentence);
+		}
+	}
+	
+	private void setBigramTokens(String sentence)
+	{
+		sentence = "_START_ " + sentence + " _END_";
+		int first = 0;
+		int second = 1;
+		String[] sentenceTokens = sentence.split("\\p{Space}+");
+		while(second < sentenceTokens.length)
+		{
+			String token = sentenceTokens[first] + " " + sentenceTokens[second];
+			tokens.add(token);
+			first ++;
+			second ++;
+		}
+	}
+	
+	private void tokenizeUnigrams()
+	{
+		while (scan.hasNextLine()) 
+		{
+			String line = scan.nextLine();
+			if(line.startsWith("*** END"))
+				break;
+			tokenizeUnigramLine(line);
+		}
+		scan.close();
+	}
+	
+	private void tokenizeUnigramLine(String line)
+	{
 		StringTokenizer itr = new StringTokenizer(line);
         while (itr.hasMoreTokens()) 
         {
@@ -140,8 +218,12 @@ public class Parser
         		tokens.add(word);
         	}
         }
-        
-        return tokens;
+	}
+	
+	private String removePunctuation(String s)
+	{
+		s = s.replaceAll("\\p{Punct}+", "");
+		return s.toLowerCase();
 	}
 
 }

@@ -8,7 +8,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 
-public class Unigram 
+public class Ngram 
 {
 
 	public static void main(String[] args) throws Exception 
@@ -16,8 +16,8 @@ public class Unigram
 		Configuration conf = new Configuration();
 		conf.set("keyword","Unigram");
 		Job job = Job.getInstance(conf, "Ngram");
-		job.setJarByClass(Unigram.class);
-		job.setMapperClass(UnigramYearMapper.class);
+		job.setJarByClass(Ngram.class);
+		job.setMapperClass(NgramrMapper.class);
 		job.setCombinerClass(NgramReducer.class);
 		job.setReducerClass(NgramReducer.class);
 		job.setOutputKeyClass(Text.class);
