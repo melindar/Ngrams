@@ -23,7 +23,7 @@ public class NgramReducer extends Reducer<Text,Text,Text,Text>
 	  }
 	  
 	  int volCount = unique.size();
-	  String prelimResult = "\t" + matchCount + "\t" + volCount + "\n";
+	  String prelimResult = matchCount + "\t" + volCount + "\n";
 	  Text result = new Text(prelimResult);
 	  context.write(key, result);
   }

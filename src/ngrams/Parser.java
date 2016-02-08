@@ -223,6 +223,7 @@ public class Parser
 	private String removePunctuation(String s)
 	{
 		s = s.replaceAll("\\p{Punct}+", "");
+		s = s.replaceAll("[^a-zA-Z0-9]", "");
 		return s.toLowerCase();
 	}
 
