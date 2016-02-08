@@ -19,7 +19,7 @@ public class Ngram
 		conf1.set("ngramType","unigramDate");
 		Job job1 = Job.getInstance(conf1, "unigramDate");
 		job1.setJarByClass(Ngram.class);
-		job1.setMapperClass(NgramrMapper.class);
+		job1.setMapperClass(NgramMapper.class);
 		job1.setCombinerClass(NgramReducer.class);
 		job1.setReducerClass(NgramReducer.class);
 		job1.setOutputKeyClass(Text.class);
@@ -35,7 +35,7 @@ public class Ngram
 		conf2.set("ngramType","unigramAuthor");
 		Job job2 = Job.getInstance(conf2, "unigramAuthor");
 		job2.setJarByClass(Ngram.class);
-		job2.setMapperClass(NgramrMapper.class);
+		job2.setMapperClass(NgramMapper.class);
 		job2.setCombinerClass(NgramReducer.class);
 		job2.setReducerClass(NgramReducer.class);
 		job2.setOutputKeyClass(Text.class);
@@ -51,7 +51,7 @@ public class Ngram
 		conf3.set("ngramType","bigramDate");
 		Job job3 = Job.getInstance(conf3, "bigramDate");
 		job3.setJarByClass(Ngram.class);
-		job3.setMapperClass(NgramrMapper.class);
+		job3.setMapperClass(NgramMapper.class);
 		job3.setCombinerClass(NgramReducer.class);
 		job3.setReducerClass(NgramReducer.class);
 		job3.setOutputKeyClass(Text.class);
@@ -67,7 +67,7 @@ public class Ngram
 		conf4.set("ngramType","bigramAuthor");
 		Job job4 = Job.getInstance(conf4, "bigramAuthor");
 		job4.setJarByClass(Ngram.class);
-		job4.setMapperClass(NgramrMapper.class);
+		job4.setMapperClass(NgramMapper.class);
 		job4.setCombinerClass(NgramReducer.class);
 		job4.setReducerClass(NgramReducer.class);
 		job4.setOutputKeyClass(Text.class);

@@ -83,7 +83,8 @@ public class Parser
 	
 	public void setHeaderInfo() 
 	{
-		String stopString = "*** START";
+		String stopString = "***";
+		
 		if(scan.hasNextLine())
 		{
 			String line = scan.nextLine();
@@ -160,7 +161,7 @@ public class Parser
 		while (scan.hasNextLine()) 
 		{
 			String line = scan.nextLine();
-			if(line.startsWith("*** END"))
+			if(line.startsWith("***"))
 				break;
 			fileString += " " + line;
 		}
@@ -199,7 +200,7 @@ public class Parser
 		while (scan.hasNextLine()) 
 		{
 			String line = scan.nextLine();
-			if(line.startsWith("*** END"))
+			if(line.startsWith("***"))
 				break;
 			tokenizeUnigramLine(line);
 		}
