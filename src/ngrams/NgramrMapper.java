@@ -21,7 +21,7 @@ public class NgramrMapper extends Mapper<NullWritable, Text, Text, Text>
 		
 		for(String word : p.tokens)
 		{
-			word = word +  "\t" + p.getValue() + ngramType;
+			word = word +  "\t" + p.getValue();
 			keyString.set(word);
 			Text title = new Text(p.getTitle());
 			context.write(keyString,title);

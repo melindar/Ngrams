@@ -26,7 +26,7 @@ public class Ngram
 		job1.setOutputValueClass(Text.class);
 		job1.setInputFormatClass(WholeFileInputFormat.class);
 		FileInputFormat.addInputPath(job1, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job1, new Path(args[1]));
+		FileOutputFormat.setOutputPath(job1, new Path(args[1] + 1));
 		job1.waitForCompletion(true);
 		
 		// Unigrams by author
@@ -42,7 +42,7 @@ public class Ngram
 		job2.setOutputValueClass(Text.class);
 		job2.setInputFormatClass(WholeFileInputFormat.class);
 		FileInputFormat.addInputPath(job2, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job2, new Path(args[1]));
+		FileOutputFormat.setOutputPath(job2, new Path(args[1] + 2));
 		job2.waitForCompletion(true);
 		
 		// Bigrams by date
@@ -58,7 +58,7 @@ public class Ngram
 		job3.setOutputValueClass(Text.class);
 		job3.setInputFormatClass(WholeFileInputFormat.class);
 		FileInputFormat.addInputPath(job3, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job3, new Path(args[1]));
+		FileOutputFormat.setOutputPath(job3, new Path(args[1] + 3));
 		job3.waitForCompletion(true);
 		
 		// Bigrams by author
@@ -74,7 +74,7 @@ public class Ngram
 		job4.setOutputValueClass(Text.class);
 		job4.setInputFormatClass(WholeFileInputFormat.class);
 		FileInputFormat.addInputPath(job4, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job4, new Path(args[1]));
+		FileOutputFormat.setOutputPath(job4, new Path(args[1] + 4));
 		System.exit(job4.waitForCompletion(true) ? 0 : 1);
 	}
 }
