@@ -14,10 +14,12 @@ public class Ngram
 	public static void main(String[] args) throws Exception 
 	{
 		// Unigrams by date
+		//int numReduceTasks = 20;
 		
 		Configuration conf1 = new Configuration();
 		conf1.set("ngramType","unigramDate");
 		Job job1 = Job.getInstance(conf1, "unigramDate");
+		//job1.setNumReduceTasks(numReduceTasks);
 		job1.setJarByClass(Ngram.class);
 		job1.setMapperClass(NgramMapper.class);
 		job1.setCombinerClass(NgramReducer.class);
@@ -27,13 +29,15 @@ public class Ngram
 		job1.setInputFormatClass(WholeFileInputFormat.class);
 		FileInputFormat.addInputPath(job1, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job1, new Path(args[1] + 1));
-		job1.waitForCompletion(true);
+		//job1.waitForCompletion(true);
+		System.exit(job1.waitForCompletion(true) ? 0 : 1);
 		
 		// Unigrams by author
 		
-		Configuration conf2 = new Configuration();
+		/*Configuration conf2 = new Configuration();
 		conf2.set("ngramType","unigramAuthor");
 		Job job2 = Job.getInstance(conf2, "unigramAuthor");
+		job2.setNumReduceTasks(numReduceTasks);
 		job2.setJarByClass(Ngram.class);
 		job2.setMapperClass(NgramMapper.class);
 		job2.setCombinerClass(NgramReducer.class);
@@ -50,6 +54,7 @@ public class Ngram
 		Configuration conf3 = new Configuration();
 		conf3.set("ngramType","bigramDate");
 		Job job3 = Job.getInstance(conf3, "bigramDate");
+		job3.setNumReduceTasks(numReduceTasks);
 		job3.setJarByClass(Ngram.class);
 		job3.setMapperClass(NgramMapper.class);
 		job3.setCombinerClass(NgramReducer.class);
@@ -66,6 +71,7 @@ public class Ngram
 		Configuration conf4 = new Configuration();
 		conf4.set("ngramType","bigramAuthor");
 		Job job4 = Job.getInstance(conf4, "bigramAuthor");
+		job4.setNumReduceTasks(numReduceTasks);
 		job4.setJarByClass(Ngram.class);
 		job4.setMapperClass(NgramMapper.class);
 		job4.setCombinerClass(NgramReducer.class);
@@ -75,6 +81,6 @@ public class Ngram
 		job4.setInputFormatClass(WholeFileInputFormat.class);
 		FileInputFormat.addInputPath(job4, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job4, new Path(args[1] + 4));
-		System.exit(job4.waitForCompletion(true) ? 0 : 1);
+		System.exit(job4.waitForCompletion(true) ? 0 : 1);*/
 	}
 }
