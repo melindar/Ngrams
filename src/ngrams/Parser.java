@@ -1,5 +1,9 @@
 package ngrams;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 /*import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException; */
@@ -18,7 +22,7 @@ public class Parser
 	private Scanner scan;
 	public ArrayList<String> tokens = new ArrayList<String>();
 
-	public Parser(String ngramType, Text value)
+	public Parser(String ngramType, Text value) 
 	{
 		this.ngramType = ngramType;
 		this.scan = new Scanner(value.toString());
@@ -29,12 +33,12 @@ public class Parser
 	{
 		String file = "11.txt";
 		//Text value = new Text();
-		Parser parse = new Parser("bigramDate", file);
+		Parser parse = new Parser("unigramDate", file);
 		parse.openFile(file);
 		parse.setHeaderInfo();
 		parse.tokenizeNgrams();
-		parse.printTokens();
-	}	
+		parse.writeTokens();
+	}*/	
 
 	public void openFile(String filename)
 	{
@@ -45,14 +49,30 @@ public class Parser
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	}
 	public void printTokens()
 	{
 		for(String s : tokens)
 		{
 			System.out.println(s);
 		}
-	} */
+	} 
+	
+	public void writeTokens()
+	{
+		try {
+			PrintWriter p = new PrintWriter(new File("output.txt"));
+			for(String s : tokens)
+			{
+				p.println(s);
+			}
+			
+			p.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/******************************** Getters and Setters ********************************/
 	
